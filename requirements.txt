@@ -1,0 +1,10 @@
+gdown
+tensorflow
+numpy
+pandas
+loguru
+scikit_learn
+tqdm
+flake8
+black
+compress_pickle
