@@ -36,6 +36,7 @@ class NGAFID_Dataset_Downloader:
             gdown.download(url, output, quiet=False)
 
         if extract:
+            logger.info('Extracting File')
             _ = tarfile.open(output).extractall(destination)
 
         return name, destination
@@ -60,7 +61,7 @@ class NGAFID_Dataset_Manager(NGAFID_Dataset_Downloader):
             self.destination = destination
 
             self.files = ['flight_data.pkl', 'flight_header.csv', 'stats.csv']
-            self.files = {file : os.path.join(destination, file) for file in self.files}
+            self.files = {file : os.path.join(destination, name, file) for file in self.files}
 
             self.download(name, destination, extract)
 
