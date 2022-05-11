@@ -71,6 +71,8 @@ class NGAFID_Dataset_Manager(NGAFID_Dataset_Downloader):
 
             self.data_dict = self.construct_data_dictionary()
 
+            self.maxs = self.flight_stats_df.iloc[0, 1:24].to_numpy(dtype = np.float32)
+            self.mins = self.flight_stats_df.iloc[1, 1:24].to_numpy(dtype = np.float32)
 
     def construct_data_dictionary(self):
         data_dict = []
@@ -94,4 +96,31 @@ class NGAFID_Dataset_Manager(NGAFID_Dataset_Downloader):
 
         return data_dict
 
-    # def get_tf_datset(self, ):
+    def get_tf_datset(self, fold = 0, training = False, shuffle = False, batch_size = 64, repeat = False,
+                        mode = 'before_after'):
+
+        ds = tf.data.Dataset.from_tensor_slices(to_dict_of_list(get_slice(self.data_dict, fold = fold, reverse = training)))
+
+        ds = ds.repeat() if repeat else ds
+        ds = ds.shuffle(shuffle) if shuffle else ds
+
+        ds = ds.map(get_dict_mod('data', get_scaler(self.maxs, self.mins)))
+        ds = ds.map(get_dict_mod('data', replace_nan_w_zero))
+        ds = ds.map(get_dict_mod('data', lambda x: tf.cast(x, tf.float32)))
+
+        if mode == 'before_after':
+            ds = ds.map(lambda x: (x['data'], x['before_after']))
+        elif mode == 'classes':
+            ds = ds.map(lambda x: (x['data'], x['target_class']))
+        elif mode == 'both':
+            ds = ds.map(lambda x: (
+            {'data': x['data']}, {'before_after': x['before_after'], 'target_class': x['target_class']}))
+        elif mode == 'hierarchy_basic':
+            ds = ds.map(
+                lambda x: ({'data': x['data']}, {'before_after': x['before_after'], 'target_class': x['hclass']}))
+        else:
+            raise KeyError
+
+        ds = ds.batch(batch_size, drop_remainder = True) if batch_size else ds
+
+        return ds
