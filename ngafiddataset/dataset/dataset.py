@@ -65,7 +65,7 @@ class NGAFID_Dataset_Manager(NGAFID_Dataset_Downloader):
 
             self.download(name, destination, extract)
 
-            self.flight_header_df = pd.read_csv(self.files['flight_header.csv'])
+            self.flight_header_df = pd.read_csv(self.files['flight_header.csv'],  index_col='Master Index')
             self.flight_data_array = load(self.files['flight_data.pkl'])
             self.flight_stats_df = pd.read_csv(self.files['stats.csv'])
 
