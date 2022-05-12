@@ -74,7 +74,7 @@ class NGAFID_Dataset_Manager(NGAFID_Dataset_Downloader):
             self.maxs = self.flight_stats_df.iloc[0, 1:24].to_numpy(dtype = np.float32)
             self.mins = self.flight_stats_df.iloc[1, 1:24].to_numpy(dtype = np.float32)
 
-    def construct_data_dictionary(self):
+    def construct_data_dictionary(self, numpy = False):
         data_dict = []
 
         for index, row in tqdm(self.flight_header_df.iterrows(), total = len(self.flight_header_df)):
@@ -83,7 +83,11 @@ class NGAFID_Dataset_Manager(NGAFID_Dataset_Downloader):
             arr = np.zeros((self.max_length, self.channels), dtype = np.float16)
             to_pad = self.flight_data_array[index][-self.max_length:, :]
             arr[:to_pad.shape[0], :] += to_pad
-            arr = tf.convert_to_tensor(arr, dtype = tf.bfloat16)
+
+            if numpy:
+                pass
+            else:
+                arr = tf.convert_to_tensor(arr, dtype = tf.bfloat16)
 
             data_dict.append({'id': index,
                               'data': arr,
