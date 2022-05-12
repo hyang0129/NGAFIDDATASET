@@ -124,3 +124,7 @@ class NGAFID_Dataset_Manager(NGAFID_Dataset_Downloader):
         ds = ds.batch(batch_size, drop_remainder = True) if batch_size else ds
 
         return ds
+
+
+    def get_numpy_dataset(self, fold = 0, training = False):
+        return to_dict_of_list(get_slice(self.data_dict, fold = fold, reverse = training))

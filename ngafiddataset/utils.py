@@ -4,11 +4,11 @@ import subprocess
 
 def connect_to_tpu():
 
-    assert (
-        "COLAB_TPU_ADDR" in os.environ
-    ), "ERROR: Not connected to a TPU runtime; please see the first cell in this notebook for instructions!"
-    TPU_ADDRESS = "grpc://" + os.environ["COLAB_TPU_ADDR"]
-    print("TPU address is", TPU_ADDRESS)
+    # assert (
+    #     "COLAB_TPU_ADDR" in os.environ
+    # ), "ERROR: Not connected to a TPU runtime; please see the first cell in this notebook for instructions!"
+    # TPU_ADDRESS = "grpc://" + os.environ["COLAB_TPU_ADDR"]
+    # print("TPU address is", TPU_ADDRESS)
 
     # Detect hardware, return appropriate distribution strategy
     try:
