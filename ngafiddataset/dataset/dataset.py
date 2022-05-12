@@ -96,7 +96,7 @@ class NGAFID_Dataset_Manager(NGAFID_Dataset_Downloader):
 
         return data_dict
 
-    def get_tf_datset(self, fold = 0, training = False, shuffle = False, batch_size = 64, repeat = False,
+    def get_tf_dataset(self, fold = 0, training = False, shuffle = False, batch_size = 64, repeat = False,
                         mode = 'before_after'):
 
         ds = tf.data.Dataset.from_tensor_slices(to_dict_of_list(get_slice(self.data_dict, fold = fold, reverse = training)))
