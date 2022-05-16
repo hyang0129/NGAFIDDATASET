@@ -69,10 +69,20 @@ class NGAFID_Dataset_Manager(NGAFID_Dataset_Downloader):
             self.flight_data_array = load(self.files['flight_data.pkl'])
             self.flight_stats_df = pd.read_csv(self.files['stats.csv'])
 
+
+
             # self.data_dict = self.construct_data_dictionary()
 
             self.maxs = self.flight_stats_df.iloc[0, 1:24].to_numpy(dtype = np.float32)
             self.mins = self.flight_stats_df.iloc[1, 1:24].to_numpy(dtype = np.float32)
+
+    def update_flight_header(self):
+        '''
+        Adds some things we forgot
+        '''
+
+        self.flight_header_df['number_flights_before'] = self.light_header_df.filename.apply(
+            lambda x: x.split('_')[-2])
 
     def construct_data_dictionary(self, numpy = True):
         data_dict = []
