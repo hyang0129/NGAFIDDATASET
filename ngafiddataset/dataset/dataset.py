@@ -74,7 +74,7 @@ class NGAFID_Dataset_Manager(NGAFID_Dataset_Downloader):
             self.maxs = self.flight_stats_df.iloc[0, 1:24].to_numpy(dtype = np.float32)
             self.mins = self.flight_stats_df.iloc[1, 1:24].to_numpy(dtype = np.float32)
 
-    def construct_data_dictionary(self, numpy = False):
+    def construct_data_dictionary(self, numpy = True):
         data_dict = []
 
         for index, row in tqdm(self.flight_header_df.iterrows(), total = len(self.flight_header_df)):
@@ -101,9 +101,11 @@ class NGAFID_Dataset_Manager(NGAFID_Dataset_Downloader):
         return data_dict
 
     def get_tf_dataset(self, fold = 0, training = False, shuffle = False, batch_size = 64, repeat = False,
-                        mode = 'before_after'):
+                        mode = 'before_after', ds = None):
 
-        ds = tf.data.Dataset.from_tensor_slices(to_dict_of_list(get_slice(self.data_dict, fold = fold, reverse = training)))
+        if ds is None:
+            ds = tf.data.Dataset.from_tensor_slices(to_dict_of_list(get_slice(self.data_dict, fold = fold, reverse = training)))
+
 
         ds = ds.repeat() if repeat else ds
         ds = ds.shuffle(shuffle) if shuffle else ds
