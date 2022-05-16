@@ -2,13 +2,18 @@ import os
 import tensorflow as tf
 import subprocess
 
-def connect_to_tpu():
+def connect_to_tpu(require_tpu = False):
 
-    # assert (
-    #     "COLAB_TPU_ADDR" in os.environ
-    # ), "ERROR: Not connected to a TPU runtime; please see the first cell in this notebook for instructions!"
-    # TPU_ADDRESS = "grpc://" + os.environ["COLAB_TPU_ADDR"]
-    # print("TPU address is", TPU_ADDRESS)
+    if require_tpu:
+        assert (
+            "COLAB_TPU_ADDR" in os.environ
+        ), "ERROR: Not connected to a TPU runtime; please see the first cell in this notebook for instructions!"
+
+    try:
+        TPU_ADDRESS = "grpc://" + os.environ["COLAB_TPU_ADDR"]
+        print("TPU address is", TPU_ADDRESS)
+    except:
+        print("No TPU Available")
 
     # Detect hardware, return appropriate distribution strategy
     try:
