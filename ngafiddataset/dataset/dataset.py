@@ -30,7 +30,7 @@ class NGAFID_Dataset_Downloader:
         assert name in cls.ngafid_urls.keys()
 
         url = cls.ngafid_urls[name]
-        output =  os.path.join(destination, "%s.csv.gz" % name)
+        output =  os.path.join(destination, "%s.tar.gz" % name)
 
         if not os.path.exists(output):
             gdown.download(url, output, quiet=False)
