@@ -101,7 +101,6 @@ class NGAFID_Dataset_Manager(NGAFID_Dataset_Downloader):
 
             data_dict.append({'id': index,
                               'data': arr,
-                              'cluster': row.cluster,
                               'class': row['class'],
                               'fold': row['fold'],
                               'target_class': row['target_class'],
