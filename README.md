@@ -1,10 +1,5 @@
 # NGAFIDDATASET
 
-Test out 
-- 2 more non deep 
-- 2 more deep methods 
+This github repository contains code related to the paper A Large-Scale Annotated Multivariate Time Series Aviation Maintenance Dataset from the NGAFID. 
 
-Look at 
-- Accuracy vs how many flights before maintenance (not days but exact number of flights)
-- Extract that info from the filename 
-- 
+There are two notebooks for reproducing experiments and one example notebook for viewing all flight data using dask dataframes. 
